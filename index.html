@@ -1,5 +1,10 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>Baptismal Invitation</title>
+<meta name="description" content="You are invited to the baptism of Rouanne Carliah G. Tolibas on December 19, 2026.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="You're invited! Baptism of Rouanne Carliah G. Tolibas">
+<meta property="og:description" content="Saturday, 19 December 2026 · 4:00 PM · Jesus Is Alive, Galas, Dipolog City. Tap to open your invitation.">
+<meta name="theme-color" content="#e9def5">
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -313,6 +318,54 @@ a { color: inherit; }
   .rv { opacity: 1; transform: none; transition: none; }
   #flyLayer { display: none !important; }
 }
+
+/* ---------- Round 2: calendar, music, petals, confetti, verse, godparents ---------- */
+.btn-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.btn.gold { background: linear-gradient(180deg, #f3e3bd 0%, #d9b873 100%); box-shadow: 0 5px 12px rgba(184, 149, 90, .38); }
+.gcal { display: block; margin-top: 8px; font-size: 14px; font-style: italic; color: var(--ink-soft); }
+.rec-ring svg { width: 34px; height: 34px; }
+
+.verse .script { font-size: 40px; margin: 0 0 10px; }
+.verse blockquote { margin: 0 auto; max-width: 28ch; font-size: 22px; font-style: italic; color: var(--ink); text-wrap: balance; }
+.verse cite { display: block; margin-top: 12px; font-style: normal; font-size: 12px; color: var(--orchid); }
+.verse { padding-block: 100px 96px; }
+
+.gp-group + .gp-group { margin-top: 20px; }
+.gp-group h3 { margin: 0 0 8px; font-size: 13px; color: var(--orchid); }
+.gp-group ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.gp-group li { font-size: 21px; color: var(--ink); }
+.gp-group li::before { content: "\2726"; color: var(--gold); margin-right: 8px; font-size: 13px; }
+
+/* music button */
+.music { position: fixed; right: max(16px, env(safe-area-inset-right, 0px)); bottom: max(16px, env(safe-area-inset-bottom, 0px)); z-index: 60;
+  display: flex; align-items: center; gap: 8px; padding: 0; border: 0; background: none; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.music .bubble { width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center; color: var(--ink);
+  background: linear-gradient(180deg, #fff 0%, #f3e4f6 100%); border: 1.5px solid var(--gold); box-shadow: 0 8px 20px rgba(74, 42, 110, .3); }
+.music svg { width: 24px; height: 24px; }
+.music .tip { font-size: 11px; padding: 6px 12px; border-radius: 999px; background: rgba(255, 255, 255, .92); box-shadow: 0 4px 12px rgba(74, 42, 110, .2); color: var(--ink); transition: opacity .4s; }
+.music.on .bubble { animation: pulse 2.4s ease-in-out infinite; color: var(--orchid); }
+.music.on .tip, .music.used .tip { opacity: 0; pointer-events: none; }
+.music .slash { display: none; } .music:not(.on) .slash { display: block; }
+@keyframes pulse { 0%, 100% { box-shadow: 0 8px 20px rgba(74, 42, 110, .3), 0 0 0 0 rgba(183, 155, 224, .55); } 50% { box-shadow: 0 8px 20px rgba(74, 42, 110, .3), 0 0 0 12px rgba(183, 155, 224, 0); } }
+
+/* confetti */
+.confetti { position: fixed; left: 0; top: 0; z-index: 70; pointer-events: none; will-change: transform, opacity; }
+
+/* falling petals (desktop) */
+#petalLayer { display: none; }
+@media (min-width: 900px) and (hover: hover) {
+  #petalLayer { display: block; position: fixed; inset: 0; z-index: 35; pointer-events: none; overflow: hidden; }
+  .petal { position: absolute; top: -30px; width: var(--s); height: calc(var(--s) * 1.3); border-radius: 80% 0 80% 0;
+    background: linear-gradient(135deg, #fbd3e3, #e99bbb); opacity: .75; animation: petalFall var(--d) linear var(--dl) infinite; }
+  @keyframes petalFall {
+    0% { transform: translate3d(0, -30px, 0) rotate(0deg); }
+    25% { transform: translate3d(calc(var(--x) * 1px), 26vh, 0) rotate(120deg); }
+    50% { transform: translate3d(calc(var(--x) * -.6px), 55vh, 0) rotate(250deg); }
+    75% { transform: translate3d(calc(var(--x) * .8px), 82vh, 0) rotate(370deg); }
+    100% { transform: translate3d(0, 112vh, 0) rotate(480deg); }
+  }
+}
+@media (prefers-reduced-motion: reduce) { #petalLayer { display: none !important; } .music.on .bubble { animation: none; } }
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -325,6 +378,8 @@ a { color: inherit; }
     <symbol id="i-kiss" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.200" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="16"/><path d="M10 38 38 10"/><path d="M14 24c3-4 6-4 10-1 4-3 7-3 10 1-3 5-6 7-10 7s-7-2-10-7z"/></symbol>
     <symbol id="i-mask" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.200" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15h24c2 0 3 2 3 4v6c0 6-6 10-15 10s-15-4-15-10v-6c0-2 1-4 3-4z"/><path d="M9 20H5M43 20h-4M5 20v6M43 20v6M16 24h16M16 28h16"/></symbol>
     <symbol id="i-hands" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.200" stroke-linecap="round" stroke-linejoin="round"><rect x="14" y="18" width="16" height="23" rx="4"/><path d="M19 18v-5h6v5M22 13V8h8l3 3"/><path d="M18 28h8M22 24v8"/><path d="M36 14l2-3M39 20l3-1M37 27l3 2"/></symbol>
+    <symbol id="i-note" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l11-2v13"/><circle cx="6.500" cy="18" r="2.500"/><circle cx="17.500" cy="16" r="2.500"/></symbol>
+    <symbol id="i-party" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 40 17 17l14 14z"/><path d="M24 12c0-3 3-3 3-6M32 20c2-1 5 0 6-3M33 28c3 0 5 2 8 1"/><circle cx="36" cy="9" r="1"/><circle cx="41" cy="22" r="1"/><circle cx="22" cy="6" r="1"/></symbol>
     <symbol id="i-cross" viewBox="0 0 22 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 2v28M3 10h16"/></symbol>
   </defs>
 </svg>
@@ -400,7 +455,20 @@ a { color: inherit; }
           <p class="when caps" data-k="ceremony.time"></p>
           <p class="where caps" data-k="ceremony.place"></p>
           <p class="addr" data-k="ceremony.address"></p>
-          <a class="btn" id="mapCeremony" target="_blank" rel="noopener">View Map</a>
+          <div class="btn-row">
+            <a class="btn" id="mapCeremony" target="_blank" rel="noopener">View Map</a>
+            <button class="btn gold" id="addCal" type="button">Add to Calendar</button>
+          </div>
+          <a class="gcal" id="gcal" target="_blank" rel="noopener">or open in Google Calendar</a>
+        </div>
+      </div>
+      <div class="ev" id="recEv" hidden>
+        <div class="ring rec-ring"><svg aria-hidden="true"><use href="#i-party"/></svg></div>
+        <div>
+          <p class="when caps" data-k="reception.time"></p>
+          <p class="where caps" data-k="reception.place"></p>
+          <p class="addr" data-k="reception.address"></p>
+          <a class="btn" id="mapReception" target="_blank" rel="noopener">View Map</a>
         </div>
       </div>
     </section>
@@ -423,6 +491,12 @@ a { color: inherit; }
       <ul class="rem" id="remList"></ul>
     </section>
 
+    <section class="card alt" id="godparents" hidden>
+      <h2 class="script">Godparents</h2>
+      <div class="divider"><svg aria-hidden="true"><use href="#i-flourish"/></svg></div>
+      <div id="gpList"></div>
+    </section>
+
     <section class="card alt" id="gallery">
       <div class="frame">
         <h2 class="script">Gallery</h2>
@@ -442,6 +516,13 @@ a { color: inherit; }
       <a class="form-fallback" id="rsvpBtn" target="_blank" rel="noopener">Form not showing? Open it here</a>
     </section>
 
+    <section class="card verse" id="verse">
+      <p class="script" data-k="verseTitle"></p>
+      <div class="divider"><svg aria-hidden="true"><use href="#i-flourish"/></svg></div>
+      <blockquote data-k="verse.text"></blockquote>
+      <cite class="caps" data-k="verse.ref"></cite>
+    </section>
+
     <section class="card alt closing" id="closing">
       <p class="script" data-k="closingScript"></p>
       <p class="caps" style="font-size:13px" data-k="closingLine"></p>
@@ -450,7 +531,12 @@ a { color: inherit; }
   </div>
 </main>
 
+<div id="petalLayer" aria-hidden="true"></div>
 <div id="flyLayer" aria-hidden="true"></div>
+<button class="music" id="music" type="button" hidden aria-label="Play background music" aria-pressed="false">
+  <span class="tip caps">Tap for music</span>
+  <span class="bubble"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#i-note"/><path class="slash" d="M3 3l18 18"/></svg></span>
+</button>
 
 <div class="lb" id="lb" hidden role="dialog" aria-label="Photo viewer">
   <button type="button" id="lbClose" aria-label="Close photo">&times;</button>
@@ -472,6 +558,16 @@ var CONFIG = {
 
   // No Google Maps link yet: this opens a map search. Replace "map" with the exact pin link when you have it.
   ceremony:  { time: "4:00 PM", place: "Jesus Is Alive", address: "Near Julie's Bakeshop crossing, Galas, Dipolog City", map: "https://www.google.com/maps/search/?api=1&query=Jesus+Is+Alive+Galas+Dipolog+City" },
+
+  // RECEPTION: fill this in to show a second card in Event Details. Leave as null to hide it.
+  // Example: { time: "6:00 PM", place: "Venue name", address: "Street, City", map: "https://maps.google.com/..." }
+  reception: null,
+
+  // GODPARENTS: add names to show a Godparents card. Leave both lists empty to hide it.
+  godparents: { ninongs: [], ninangs: [] },
+
+  verseTitle: "A Blessing",
+  verse: { text: "Suffer the little children to come unto me, and forbid them not: for of such is the kingdom of God.", ref: "Mark 10:14" },
 
   dress: {
     guestsRole: "Guests", guests: "Violet · Pink · Soft pastels",
@@ -682,6 +778,162 @@ var CONFIG = {
   (mq.addEventListener ? mq.addEventListener("change", sync) : mq.addListener(sync));
   document.addEventListener("visibilitychange", sync);
   sync();
+})();
+
+/* ---------- Round 2 JS ---------- */
+(function () {
+  var C = CONFIG, reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* reception */
+  if (C.reception && C.reception.place) {
+    document.getElementById("recEv").hidden = false;
+    var mr = document.getElementById("mapReception");
+    if (C.reception.map) mr.href = C.reception.map; else mr.hidden = true;
+  }
+
+  /* godparents */
+  (function () {
+    var g = C.godparents || {}, n1 = g.ninongs || [], n2 = g.ninangs || [];
+    if (!n1.length && !n2.length) return;
+    var root = document.getElementById("gpList");
+    [["Ninongs", n1], ["Ninangs", n2]].forEach(function (grp) {
+      if (!grp[1].length) return;
+      var d = document.createElement("div"); d.className = "gp-group";
+      var h = document.createElement("h3"); h.className = "caps"; h.textContent = grp[0]; d.appendChild(h);
+      var ul = document.createElement("ul");
+      grp[1].forEach(function (nm) { var li = document.createElement("li"); li.textContent = nm; ul.appendChild(li); });
+      d.appendChild(ul); root.appendChild(d);
+    });
+    document.getElementById("godparents").hidden = false;
+  })();
+
+  /* add to calendar */
+  (function () {
+    var start = new Date(C.eventDate), end = new Date(start.getTime() + 2 * 3600 * 1000);
+    if (isNaN(start)) { document.getElementById("addCal").hidden = true; document.getElementById("gcal").hidden = true; return; }
+    function f(d) { return d.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, ""); }
+    var title = "Baptism of " + C.babyName;
+    var where = C.ceremony.place + ", " + C.ceremony.address;
+    var note = "You are invited! Dress code: " + C.dress.guests + ".";
+    document.getElementById("gcal").href = "https://calendar.google.com/calendar/render?action=TEMPLATE&text=" + encodeURIComponent(title) +
+      "&dates=" + f(start) + "/" + f(end) + "&details=" + encodeURIComponent(note) + "&location=" + encodeURIComponent(where);
+    function esc(t) { return String(t).replace(/\\/g, "\\\\").replace(/;/g, "\\;").replace(/,/g, "\\,").replace(/\n/g, "\\n"); }
+    document.getElementById("addCal").addEventListener("click", function () {
+      var ics = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Baptism Invitation//EN", "BEGIN:VEVENT",
+        "UID:baptism-" + start.getTime() + "@invitation", "DTSTAMP:" + f(new Date()), "DTSTART:" + f(start), "DTEND:" + f(end),
+        "SUMMARY:" + esc(title), "LOCATION:" + esc(where), "DESCRIPTION:" + esc(note),
+        "BEGIN:VALARM", "TRIGGER:-P1D", "ACTION:DISPLAY", "DESCRIPTION:Baptism tomorrow", "END:VALARM", "END:VEVENT", "END:VCALENDAR"].join("\r\n");
+      var a = document.createElement("a");
+      a.href = URL.createObjectURL(new Blob([ics], { type: "text/calendar;charset=utf-8" }));
+      a.download = "baptism-invitation.ics";
+      document.body.appendChild(a); a.click(); a.remove();
+    });
+  })();
+
+  /* confetti burst when the invitation opens */
+  function confetti() {
+    if (reduce || !document.body.animate) return;
+    var cols = ["#de93b4", "#b79be0", "#8b5cc2", "#e3cfa6", "#f8dce8", "#b8955a"];
+    var cx = innerWidth / 2, cy = innerHeight * .42, n = innerWidth < 600 ? 46 : 70;
+    for (var i = 0; i < n; i++) {
+      var e = document.createElement("div"); e.className = "confetti";
+      var sz = 7 + Math.random() * 8, shape = Math.random();
+      e.style.width = sz + "px"; e.style.height = (shape < .5 ? sz : sz * .5) + "px";
+      e.style.background = cols[i % cols.length];
+      e.style.borderRadius = shape < .35 ? "50%" : shape < .7 ? "80% 0 80% 0" : "2px";
+      document.body.appendChild(e);
+      var ang = Math.random() * Math.PI * 2, dist = 120 + Math.random() * Math.min(420, innerWidth * .5);
+      var tx = Math.cos(ang) * dist, ty = Math.sin(ang) * dist * .8 - 80;
+      var rot = (Math.random() - .5) * 900, fall = 260 + Math.random() * 220;
+      var anim = e.animate([
+        { transform: "translate(" + cx + "px," + cy + "px) scale(.2) rotate(0deg)", opacity: 1 },
+        { transform: "translate(" + (cx + tx) + "px," + (cy + ty) + "px) scale(1) rotate(" + rot * .5 + "deg)", opacity: 1, offset: .45 },
+        { transform: "translate(" + (cx + tx * 1.15) + "px," + (cy + ty + fall) + "px) scale(.9) rotate(" + rot + "deg)", opacity: 0 }
+      ], { duration: 1800 + Math.random() * 1000, easing: "cubic-bezier(.2,.7,.3,1)", fill: "forwards" });
+      anim.onfinish = (function (el) { return function () { el.remove(); }; })(e);
+    }
+  }
+
+  /* lullaby (generated in the browser, no audio file needed) */
+  var btn = document.getElementById("music"), ctx = null, master = null, timer = null, playing = false, step = 0, nextT = 0;
+  /* melody: [semitones from C4, beats]  (a gentle lullaby in 3/4) */
+  var M = [[4,1],[4,1],[7,1],  [4,1],[4,1],[7,1],  [4,1],[7,1],[12,1],[11,2],[9,1], [9,1],[7,2],
+           [2,1],[4,1],[5,1],  [2,1],[2,1],[4,1],  [5,1],[2,1],[5,1],[11,2],[9,1], [7,3],
+           [4,1],[4,1],[7,1],  [4,1],[4,1],[7,1],  [4,1],[7,1],[12,1],[11,2],[9,1], [9,1],[7,2],
+           [2,1],[4,1],[5,1],  [7,1],[5,1],[2,1],  [4,3], [0,3]];
+  var BPM = 78, BEAT = 60 / BPM;
+  function hz(semi) { return 261.63 * Math.pow(2, semi / 12); }
+  function tone(freq, t, dur, vol, type) {
+    var o = ctx.createOscillator(), g = ctx.createGain();
+    o.type = type || "sine"; o.frequency.value = freq;
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(vol, t + .03);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(g); g.connect(master); o.start(t); o.stop(t + dur + .05);
+    /* soft bell overtone */
+    var o2 = ctx.createOscillator(), g2 = ctx.createGain();
+    o2.type = "sine"; o2.frequency.value = freq * 2;
+    g2.gain.setValueAtTime(0.0001, t); g2.gain.exponentialRampToValueAtTime(vol * .25, t + .02); g2.gain.exponentialRampToValueAtTime(0.0001, t + dur * .6);
+    o2.connect(g2); g2.connect(master); o2.start(t); o2.stop(t + dur);
+  }
+  function schedule() {
+    if (!playing) return;
+    while (nextT < ctx.currentTime + .6) {
+      var n = M[step % M.length];
+      var len = n[1] * BEAT;
+      tone(hz(n[0] - 0), nextT, len * 1.6, .16, "triangle");
+      /* soft bass on the first beat of each bar */
+      var beatIndex = 0; for (var i = 0; i < step % M.length; i++) beatIndex += M[i][1];
+      if (beatIndex % 3 === 0) { var bass = [0, -5, 0, -5][Math.floor(beatIndex / 3) % 4]; tone(hz(bass - 12), nextT, BEAT * 2.6, .1, "sine"); }
+      nextT += len; step++;
+      if (step % M.length === 0) nextT += BEAT * 2;
+    }
+    timer = setTimeout(schedule, 150);
+  }
+  function setMusic(on) {
+    if (on) {
+      if (!ctx) {
+        var AC = window.AudioContext || window.webkitAudioContext;
+        if (!AC) return;
+        ctx = new AC(); master = ctx.createGain(); master.gain.value = .0001;
+        var dl = ctx.createDelay(1); dl.delayTime.value = .32; var fb = ctx.createGain(); fb.gain.value = .35;
+        var wet = ctx.createGain(); wet.gain.value = .45;
+        master.connect(ctx.destination); master.connect(dl); dl.connect(fb); fb.connect(dl); dl.connect(wet); wet.connect(ctx.destination);
+      }
+      ctx.resume();
+      master.gain.cancelScheduledValues(ctx.currentTime); master.gain.setTargetAtTime(.9, ctx.currentTime, .4);
+      playing = true; nextT = ctx.currentTime + .1; schedule();
+    } else {
+      playing = false; clearTimeout(timer);
+      if (ctx) { master.gain.setTargetAtTime(.0001, ctx.currentTime, .25); }
+    }
+    btn.classList.toggle("on", on); btn.classList.add("used");
+    btn.setAttribute("aria-pressed", on ? "true" : "false");
+    btn.setAttribute("aria-label", on ? "Pause background music" : "Play background music");
+  }
+  btn.addEventListener("click", function () { setMusic(!playing); });
+  document.addEventListener("visibilitychange", function () { if (document.hidden && playing) setMusic(false); });
+
+  /* petals (desktop CSS shows them) */
+  (function () {
+    if (reduce) return;
+    var L = document.getElementById("petalLayer");
+    for (var i = 0; i < 16; i++) {
+      var p = document.createElement("i"); p.className = "petal";
+      p.style.left = (Math.random() * 100) + "%";
+      p.style.setProperty("--s", (9 + Math.random() * 9).toFixed(1) + "px");
+      p.style.setProperty("--d", (14 + Math.random() * 12).toFixed(1) + "s");
+      p.style.setProperty("--dl", (-Math.random() * 26).toFixed(1) + "s");
+      p.style.setProperty("--x", ((Math.random() - .5) * 140).toFixed(0));
+      L.appendChild(p);
+    }
+  })();
+
+  /* when the invitation opens: show music button + confetti */
+  var inv = document.getElementById("invite");
+  function opened() { btn.hidden = false; setTimeout(confetti, 250); }
+  if (!inv.hidden) { btn.hidden = false; }
+  else new MutationObserver(function (m, ob) { if (!inv.hidden) { ob.disconnect(); opened(); } }).observe(inv, { attributes: true, attributeFilter: ["hidden"] });
 })();
 </script>
 
