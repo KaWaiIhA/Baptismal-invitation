@@ -366,7 +366,79 @@ a { color: inherit; }
   }
 }
 @media (prefers-reduced-motion: reduce) { #petalLayer { display: none !important; } .music.on .bubble { animation: none; } }
+/* ---------- Round 3: responsiveness, headings, mobile butterflies + petals ---------- */
+:root { --k: 1; }
+@media (max-width: 480px) { :root { --k: .82; } }
+@media (max-width: 360px) { :root { --k: .68; } }
+html { -webkit-text-size-adjust: 100%; }
+body { font-size: clamp(16px, 4.6vw, 19px); padding-block: 14px 40px; padding-left: max(12px, env(safe-area-inset-left, 0px)); padding-right: max(12px, env(safe-area-inset-right, 0px)); }
+@media (max-width: 900px) { body { background-attachment: scroll; min-height: 100vh; } }
+
+/* script fonts overhang their line box; give them room so letters are never cut */
+.script, .card h2.script, .arch .big, .frame h2, .closing .script, .verse .script, .count-done, .name-script, .baby {
+  display: block; padding: .12em .2em .26em; margin-inline: auto; max-width: 100%; overflow: visible; overflow-wrap: anywhere;
+}
+.card h2.script, .arch .big { -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.card h2 { font-size: clamp(38px, 12.5vw, 54px); margin: 0 0 2px; }
+.frame h2 { font-size: clamp(42px, 14vw, 66px); margin: 0; }
+.frame { max-width: min(330px, 100%); padding: clamp(16px, 5vw, 26px) clamp(12px, 4vw, 22px); }
+.gate h1 { font-size: clamp(42px, 15vw, 62px); padding: .1em .2em .22em; }
+.arch { width: min(100%, 320px); padding: clamp(34px, 11vw, 46px) clamp(12px, 4vw, 20px) clamp(28px, 9vw, 40px); border-radius: 170px 170px 22px 22px; }
+.arch .big { font-size: clamp(54px, 18vw, 78px); }
+.arch .baby { font-size: clamp(38px, 13vw, 64px); }
+.arch .tiny { font-size: clamp(10px, 3vw, 11px); }
+.photo-card .name-script { font-size: clamp(34px, 11vw, 50px); }
+.closing .script { font-size: clamp(40px, 13vw, 52px); }
+.verse .script { font-size: clamp(32px, 10vw, 40px); }
+.verse blockquote { font-size: clamp(18px, 5.4vw, 22px); }
+.card { padding: clamp(84px, 24vw, 104px) clamp(16px, 6vw, 26px) clamp(78px, 22vw, 96px); border-radius: clamp(20px, 6vw, 28px); }
+.photo-card { padding-block: clamp(92px, 26vw, 112px) clamp(90px, 25vw, 110px); }
+.closing { padding-block: clamp(90px, 25vw, 108px) clamp(84px, 23vw, 100px); }
+.verse { padding-block: clamp(86px, 24vw, 100px) clamp(80px, 22vw, 96px); }
+.card::before, .gate::before { width: clamp(130px, 44vw, 190px); height: clamp(105px, 36vw, 154px); }
+.card::after, .gate::after { width: clamp(130px, 44vw, 190px); height: clamp(105px, 36vw, 154px); }
+.gate::before, .gate::after { width: clamp(150px, 52vw, 230px); height: clamp(121px, 42vw, 186px); }
+.gate { min-height: calc(100vh - 50px); min-height: calc(100svh - 50px); padding: 40px 10px; border-radius: clamp(20px, 6vw, 28px); }
+.count { gap: clamp(4px, 1.6vw, 8px); }
+.count b { font-size: clamp(22px, 7.4vw, 31px); }
+.count span { font-size: clamp(8px, 2.5vw, 10px); letter-spacing: .1em; }
+.ev { grid-template-columns: clamp(54px, 17vw, 74px) minmax(0, 1fr); gap: clamp(10px, 3vw, 14px); }
+.ring { width: clamp(54px, 17vw, 70px); height: clamp(54px, 17vw, 70px); }
+.ring svg { width: 50%; height: 50%; }
+.rem li { grid-template-columns: clamp(46px, 14vw, 58px) minmax(0, 1fr); }
+.rem .ring { width: clamp(46px, 14vw, 58px); height: clamp(46px, 14vw, 58px); }
+.rem h3 { overflow-wrap: anywhere; }
+.date-line, .ev .where, .rsvp-text, .rsvp-sub { overflow-wrap: anywhere; }
+.panel { max-width: min(330px, 100%); }
+.gal { gap: clamp(8px, 3vw, 12px); }
+.form-box iframe { height: clamp(760px, 190vw, 880px); }
+.btn { padding: 11px clamp(16px, 5vw, 26px); font-size: clamp(11px, 3vw, 12px); }
+.music .bubble { width: 48px; height: 48px; }
+@media (min-width: 700px) { .invite, .gate { max-width: 460px; } }
+@media (max-width: 340px) { .btn-row .btn { width: 100%; text-align: center; } .swatches i { width: 28px; height: 28px; } }
+
+/* butterflies in cards: keep them fully visible, never clipped at the edge */
+.bf { max-width: 22%; }
+.card > .bf { z-index: 1; }
+
+/* flying butterflies + falling petals now run on phones too */
+#flyLayer { display: block !important; position: fixed; inset: 0; z-index: 40; pointer-events: none; overflow: hidden; }
+.fly { position: absolute; left: 0; top: 0; will-change: transform; filter: drop-shadow(0 6px 8px rgba(74, 42, 110, .22)); }
+.fly i { display: block; width: 100%; height: 100%; background-size: contain; background-repeat: no-repeat; background-position: center; transform-origin: 50% 55%; animation: flap .28s ease-in-out infinite alternate; }
+@keyframes flap { from { transform: scaleX(1); } to { transform: scaleX(.28); } }
+#petalLayer { display: block !important; position: fixed; inset: 0; z-index: 35; pointer-events: none; overflow: hidden; }
+.petal { position: absolute; top: -30px; width: var(--s); height: calc(var(--s) * 1.3); border-radius: 80% 0 80% 0;
+  background: linear-gradient(135deg, #fbd3e3, #e99bbb); opacity: .75; animation: petalFall var(--d) linear var(--dl) infinite; }
+@keyframes petalFall {
+  0% { transform: translate3d(0, -30px, 0) rotate(0deg); }
+  25% { transform: translate3d(calc(var(--x) * 1px), 26vh, 0) rotate(120deg); }
+  50% { transform: translate3d(calc(var(--x) * -.6px), 55vh, 0) rotate(250deg); }
+  75% { transform: translate3d(calc(var(--x) * .8px), 82vh, 0) rotate(370deg); }
+  100% { transform: translate3d(0, 112vh, 0) rotate(480deg); }
+}
+@media (prefers-reduced-motion: reduce) { #flyLayer, #petalLayer { display: none !important; } }
 </style>
+
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
@@ -387,10 +459,10 @@ a { color: inherit; }
 <main id="app">
   <!-- Envelope gate -->
   <section class="gate" id="gate" aria-label="Envelope">
-    <div class="bf b1" style="width:96px;height:92px;top:7%;left:6%;--r:-14deg"></div>
-    <div class="bf b2" style="width:84px;height:82px;top:11%;right:8%;--r:12deg;animation-delay:-2s"></div>
-    <div class="bf b5" style="width:70px;height:62px;bottom:13%;left:10%;--r:8deg;animation-delay:-4s"></div>
-    <div class="bf b3" style="width:62px;height:60px;bottom:19%;right:9%;--r:-10deg;animation-delay:-1s"></div>
+    <div class="bf b1" style="width:calc(96px*var(--k,1));height:calc(92px*var(--k,1));top:7%;left:6%;--r:-14deg"></div>
+    <div class="bf b2" style="width:calc(84px*var(--k,1));height:calc(82px*var(--k,1));top:11%;right:8%;--r:12deg;animation-delay:-2s"></div>
+    <div class="bf b5" style="width:calc(70px*var(--k,1));height:calc(62px*var(--k,1));bottom:13%;left:10%;--r:8deg;animation-delay:-4s"></div>
+    <div class="bf b3" style="width:calc(62px*var(--k,1));height:calc(60px*var(--k,1));bottom:19%;right:9%;--r:-10deg;animation-delay:-1s"></div>
     <h1 class="script">You&rsquo;re Invited!</h1>
     <p class="hint caps">Tap the envelope to open</p>
     <button class="env-btn" id="envBtn" type="button" aria-label="Open the invitation envelope"></button>
@@ -401,8 +473,8 @@ a { color: inherit; }
   <div class="invite" id="invite" hidden>
 
     <section class="card" id="cover">
-      <div class="bf b2" style="width:74px;height:72px;top:22%;left:3%;--r:-12deg"></div>
-      <div class="bf b1" style="width:70px;height:67px;top:34%;right:3%;--r:10deg;animation-delay:-3s"></div>
+      <div class="bf b2" style="width:calc(74px*var(--k,1));height:calc(72px*var(--k,1));top:22%;left:3%;--r:-12deg"></div>
+      <div class="bf b1" style="width:calc(70px*var(--k,1));height:calc(67px*var(--k,1));top:34%;right:3%;--r:10deg;animation-delay:-3s"></div>
       <div class="arch">
         <p class="tiny caps" data-k="coverIntro"></p>
         <p class="script big">Baptism</p>
@@ -427,11 +499,11 @@ a { color: inherit; }
     </section>
 
     <section class="card photo-card" id="photo">
-      <div class="bf b4" style="width:80px;height:75px;top:9%;right:6%;--r:12deg"></div>
-      <div class="bf b5" style="width:66px;height:59px;bottom:11%;left:5%;--r:-8deg;animation-delay:-3s"></div>
+      <div class="bf b4" style="width:calc(80px*var(--k,1));height:calc(75px*var(--k,1));top:9%;right:6%;--r:12deg"></div>
+      <div class="bf b5" style="width:calc(66px*var(--k,1));height:calc(59px*var(--k,1));bottom:11%;left:5%;--r:-8deg;animation-delay:-3s"></div>
       <i class="sp" style="top:16%;left:14%"></i>
       <i class="sp" style="top:30%;right:12%;animation-delay:-1.2s"></i>
-      <i class="sp" style="bottom:28%;left:9%;animation-delay:-2.2s;width:10px;height:10px"></i>
+      <i class="sp" style="bottom:28%;left:9%;animation-delay:-2.2s;width:calc(10px*var(--k,1));height:calc(10px*var(--k,1))"></i>
       <i class="sp" style="bottom:20%;right:16%;animation-delay:-.6s"></i>
       <div class="oval" id="mainPhoto" role="img" aria-label="Photo of the baby"><span data-k="photoPlaceholder"></span></div>
       <div class="name-block">
@@ -533,7 +605,7 @@ a { color: inherit; }
 
 <div id="petalLayer" aria-hidden="true"></div>
 <div id="flyLayer" aria-hidden="true"></div>
-<button class="music" id="music" type="button" hidden aria-label="Play background music" aria-pressed="false">
+<button class="music" id="music" type="button" aria-label="Play background music" aria-pressed="false">
   <span class="tip caps">Tap for music</span>
   <span class="bubble"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#i-note"/><path class="slash" d="M3 3l18 18"/></svg></span>
 </button>
@@ -711,15 +783,18 @@ var CONFIG = {
   }).observe(sec, { childList: true, characterData: true, subtree: true });
 
   /* butterflies: desktop only */
-  var mq = window.matchMedia("(min-width: 900px) and (hover: hover)");
+  var mq = { matches: true, addEventListener: function () {} };
   if (reduce) return;
   var layer = document.getElementById("flyLayer");
   var sizes = { 1: [180, 174], 2: [180, 174], 3: [180, 174], 4: [180, 170], 5: [180, 162] };
   var bugs = [], running = false, last = 0, mouse = { x: -999, y: -999 };
-  window.addEventListener("mousemove", function (e) { mouse.x = e.clientX; mouse.y = e.clientY; });
+  window.addEventListener("pointermove", function (e) { mouse.x = e.clientX; mouse.y = e.clientY; });
+  window.addEventListener("touchstart", function (e) { var t = e.touches[0]; if (t) { mouse.x = t.clientX; mouse.y = t.clientY; } }, { passive: true });
+  window.addEventListener("touchend", function () { mouse.x = -999; mouse.y = -999; }, { passive: true });
+  var small = function () { return innerWidth < 700; };
 
   function make(i) {
-    var kind = (i % 5) + 1, w = 46 + Math.random() * 40, h = w * sizes[kind][1] / sizes[kind][0];
+    var kind = (i % 5) + 1, w = small() ? 34 + Math.random() * 26 : 46 + Math.random() * 40, h = w * sizes[kind][1] / sizes[kind][0];
     var el = document.createElement("div"); el.className = "fly";
     el.style.width = w + "px"; el.style.height = h + "px";
     var b = document.createElement("i");
@@ -730,7 +805,7 @@ var CONFIG = {
     var edge = Math.random() < .5;
     return { el: el, w: w, h: h,
       x: edge ? -w : Math.random() * innerWidth, y: edge ? Math.random() * innerHeight : innerHeight + h,
-      a: Math.random() * Math.PI * 2, speed: 38 + Math.random() * 38, turn: 0,
+      a: Math.random() * Math.PI * 2, speed: small() ? 26 + Math.random() * 28 : 38 + Math.random() * 38, turn: 0,
       wob: Math.random() * 10, rot: 0 };
   }
 
@@ -756,7 +831,7 @@ var CONFIG = {
       g.x += Math.cos(g.a) * sp * dt;
       g.y += Math.sin(g.a) * sp * dt - Math.sin(g.wob * 4) * 12 * dt;
       /* wrap smoothly around the screen */
-      var m = 120;
+      var m = small() ? 70 : 120;
       if (g.x < -m) g.x = W + m / 2; else if (g.x > W + m) g.x = -m / 2;
       if (g.y < -m) g.y = H + m / 2; else if (g.y > H + m) g.y = -m / 2;
       /* sprite head points up-left, so add a 20deg offset after turning "up" toward heading */
@@ -770,12 +845,12 @@ var CONFIG = {
 
   function start() {
     if (running) return;
-    if (!bugs.length) for (var i = 0; i < 9; i++) bugs.push(make(i));
+    if (!bugs.length) for (var i = 0; i < (small() ? 6 : 9); i++) bugs.push(make(i));
     running = true; last = performance.now(); requestAnimationFrame(frame);
   }
   function stop() { running = false; }
   function sync() { if (mq.matches && !document.hidden) start(); else stop(); }
-  (mq.addEventListener ? mq.addEventListener("change", sync) : mq.addListener(sync));
+  
   document.addEventListener("visibilitychange", sync);
   sync();
 })();
@@ -911,14 +986,39 @@ var CONFIG = {
     btn.setAttribute("aria-pressed", on ? "true" : "false");
     btn.setAttribute("aria-label", on ? "Pause background music" : "Play background music");
   }
-  btn.addEventListener("click", function () { setMusic(!playing); });
-  document.addEventListener("visibilitychange", function () { if (document.hidden && playing) setMusic(false); });
+  var userPaused = false, wasPlaying = false;
+  btn.addEventListener("click", function () { userPaused = playing; setMusic(!playing); });
+  /* pause when the tab is hidden, resume automatically when it comes back (unless the guest paused it) */
+  document.addEventListener("visibilitychange", function () {
+    if (document.hidden) { wasPlaying = playing; if (playing) setMusic(false); }
+    else if (wasPlaying && !userPaused) { setMusic(true); }
+  });
+
+  /* autoplay: browsers only allow sound after a tap, so start on the very first
+     interaction (the envelope tap counts) and also try immediately in case it is allowed */
+  var autoDone = false;
+  function autoStart() {
+    if (autoDone || userPaused) return;
+    autoDone = true;
+    ["pointerdown", "touchstart", "click", "keydown", "scroll"].forEach(function (ev) { window.removeEventListener(ev, autoStart, true); });
+    if (!playing) setMusic(true);
+    /* if the browser kept the audio suspended, try again on the next gesture */
+    setTimeout(function () {
+      if (ctx && ctx.state !== "running" && !userPaused) {
+        autoDone = false;
+        ["pointerdown", "touchstart", "click", "keydown"].forEach(function (ev) { window.addEventListener(ev, autoStart, true); });
+      }
+    }, 600);
+  }
+  window.__autoMusic = autoStart;
+  ["pointerdown", "touchstart", "click", "keydown"].forEach(function (ev) { window.addEventListener(ev, autoStart, true); });
+  try { setMusic(true); if (ctx && ctx.state !== "running") { playing = false; clearTimeout(timer); btn.classList.remove("on", "used"); btn.setAttribute("aria-pressed","false"); } else { autoDone = true; } } catch (e) {}
 
   /* petals (desktop CSS shows them) */
   (function () {
     if (reduce) return;
     var L = document.getElementById("petalLayer");
-    for (var i = 0; i < 16; i++) {
+    for (var i = 0; i < (innerWidth < 700 ? 12 : 16); i++) {
       var p = document.createElement("i"); p.className = "petal";
       p.style.left = (Math.random() * 100) + "%";
       p.style.setProperty("--s", (9 + Math.random() * 9).toFixed(1) + "px");
@@ -932,6 +1032,7 @@ var CONFIG = {
   /* when the invitation opens: show music button + confetti */
   var inv = document.getElementById("invite");
   function opened() { btn.hidden = false; setTimeout(confetti, 250); }
+  btn.hidden = false;
   if (!inv.hidden) { btn.hidden = false; }
   else new MutationObserver(function (m, ob) { if (!inv.hidden) { ob.disconnect(); opened(); } }).observe(inv, { attributes: true, attributeFilter: ["hidden"] });
 })();
