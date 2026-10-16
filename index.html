@@ -949,75 +949,24 @@ var CONFIG = {
     }
   }
 
-  /* lullaby (generated in the browser, no audio file needed) */
-  var btn = document.getElementById("music"), ctx = null, master = null, timer = null, playing = false, step = 0, nextT = 0;
-  /* melody: [semitones from C4, beats]  (a gentle lullaby in 3/4) */
-  var M = [[4,1],[4,1],[7,1],  [4,1],[4,1],[7,1],  [4,1],[7,1],[12,1],[11,2],[9,1], [9,1],[7,2],
-           [2,1],[4,1],[5,1],  [2,1],[2,1],[4,1],  [5,1],[2,1],[5,1],[11,2],[9,1], [7,3],
-           [4,1],[4,1],[7,1],  [4,1],[4,1],[7,1],  [4,1],[7,1],[12,1],[11,2],[9,1], [9,1],[7,2],
-           [2,1],[4,1],[5,1],  [7,1],[5,1],[2,1],  [4,3], [0,3]];
-  var BPM = 78, BEAT = 60 / BPM;
-  function hz(semi) { return 261.63 * Math.pow(2, semi / 12); }
-  /* piano: struck-string partials that each fade at their own rate, through a soft low-pass */
-  var PART = [[1, 1, 1], [2, .42, .7], [3, .24, .5], [4, .12, .35], [5, .06, .25], [6, .03, .2]];
-  function tone(freq, t, dur, vol) {
-    var ring = Math.max(1.6, dur * 1.3) * (freq < 200 ? 1.5 : 1);
-    var lp = ctx.createBiquadFilter(); lp.type = "lowpass";
-    lp.frequency.setValueAtTime(Math.min(7000, freq * 9), t);
-    lp.frequency.exponentialRampToValueAtTime(Math.max(900, freq * 2.5), t + ring * .6);
-    lp.connect(master);
-    PART.forEach(function (p, k) {
-      var o = ctx.createOscillator(), g = ctx.createGain(), life = ring * p[2];
-      o.type = "sine"; o.frequency.value = freq * (k + 1) * (1 + k * k * .0004);
-      o.detune.value = (Math.random() - .5) * 4;
-      g.gain.setValueAtTime(0.0001, t);
-      g.gain.linearRampToValueAtTime(vol * p[1], t + .008);
-      g.gain.exponentialRampToValueAtTime(vol * p[1] * .35, t + Math.min(.25, life * .2));
-      g.gain.exponentialRampToValueAtTime(0.0001, t + life);
-      o.connect(g); g.connect(lp); o.start(t); o.stop(t + life + .05);
-    });
-    /* tiny hammer thump */
-    var h = ctx.createOscillator(), hg = ctx.createGain();
-    h.type = "triangle"; h.frequency.value = freq * .5;
-    hg.gain.setValueAtTime(vol * .35, t); hg.gain.exponentialRampToValueAtTime(0.0001, t + .06);
-    h.connect(hg); hg.connect(master); h.start(t); h.stop(t + .08);
-  }
-  function schedule() {
-    if (!playing) return;
-    while (nextT < ctx.currentTime + .6) {
-      var n = M[step % M.length];
-      var len = n[1] * BEAT;
-      tone(hz(n[0]), nextT, len * 1.6, .17);
-      /* soft bass on the first beat of each bar */
-      var beatIndex = 0; for (var i = 0; i < step % M.length; i++) beatIndex += M[i][1];
-      if (beatIndex % 3 === 0) { var bass = [0, -5, 0, -5][Math.floor(beatIndex / 3) % 4]; tone(hz(bass - 12), nextT, BEAT * 2.6, .12); }
-      nextT += len; step++;
-      if (step % M.length === 0) nextT += BEAT * 2;
-    }
-    timer = setTimeout(schedule, 150);
-  }
-  function setMusic(on) {
-    if (on) {
-      if (!ctx) {
-        var AC = window.AudioContext || window.webkitAudioContext;
-        if (!AC) return;
-        ctx = new AC(); master = ctx.createGain(); master.gain.value = .0001;
-        var dl = ctx.createDelay(1); dl.delayTime.value = .32; var fb = ctx.createGain(); fb.gain.value = .28;
-        var wet = ctx.createGain(); wet.gain.value = .3;
-        master.connect(ctx.destination); master.connect(dl); dl.connect(fb); fb.connect(dl); dl.connect(wet); wet.connect(ctx.destination);
-      }
-      ctx.resume();
-      master.gain.cancelScheduledValues(ctx.currentTime); master.gain.setTargetAtTime(.9, ctx.currentTime, .4);
-      playing = true; nextT = ctx.currentTime + .1; schedule();
-    } else {
-      playing = false; clearTimeout(timer);
-      if (ctx) { master.gain.setTargetAtTime(.0001, ctx.currentTime, .25); }
-    }
+  /* background music: always-with.mp3 (upload it next to index.html in the project) */
+  var btn = document.getElementById("music"), playing = false, userPaused = false, wasPlaying = false, autoDone = false;
+  var audio = new Audio("always-with.mp3");
+  audio.loop = true; audio.preload = "auto"; audio.volume = 0.7;
+  function ui(on) {
     btn.classList.toggle("on", on); btn.classList.add("used");
     btn.setAttribute("aria-pressed", on ? "true" : "false");
     btn.setAttribute("aria-label", on ? "Pause background music" : "Play background music");
   }
-  var userPaused = false, wasPlaying = false;
+  function setMusic(on) {
+    if (on) {
+      playing = true; ui(true);
+      var p = audio.play();
+      if (p && p.catch) p.catch(function () { playing = false; btn.classList.remove("on", "used"); btn.setAttribute("aria-pressed", "false"); autoDone = false; armAuto(); });
+    } else {
+      playing = false; audio.pause(); ui(false);
+    }
+  }
   btn.addEventListener("click", function () { userPaused = playing; setMusic(!playing); });
   /* pause when the tab is hidden, resume automatically when it comes back (unless the guest paused it) */
   document.addEventListener("visibilitychange", function () {
@@ -1027,23 +976,21 @@ var CONFIG = {
 
   /* autoplay: browsers only allow sound after a tap, so start on the very first
      interaction (the envelope tap counts) and also try immediately in case it is allowed */
-  var autoDone = false;
-  function autoStart() {
+  var evs = ["pointerdown", "touchstart", "click", "keydown"];
+  function armAuto() { evs.forEach(function (ev) { window.addEventListener(ev, autoStart, true); }); }
+  function autoStart(e) {
     if (autoDone || userPaused) return;
+    if (e && btn.contains(e.target)) return; /* the music button handles itself */
     autoDone = true;
-    ["pointerdown", "touchstart", "click", "keydown", "scroll"].forEach(function (ev) { window.removeEventListener(ev, autoStart, true); });
+    evs.forEach(function (ev) { window.removeEventListener(ev, autoStart, true); });
     if (!playing) setMusic(true);
-    /* if the browser kept the audio suspended, try again on the next gesture */
-    setTimeout(function () {
-      if (ctx && ctx.state !== "running" && !userPaused) {
-        autoDone = false;
-        ["pointerdown", "touchstart", "click", "keydown"].forEach(function (ev) { window.addEventListener(ev, autoStart, true); });
-      }
-    }, 600);
   }
   window.__autoMusic = autoStart;
-  ["pointerdown", "touchstart", "click", "keydown"].forEach(function (ev) { window.addEventListener(ev, autoStart, true); });
-  try { setMusic(true); if (ctx && ctx.state !== "running") { playing = false; clearTimeout(timer); btn.classList.remove("on", "used"); btn.setAttribute("aria-pressed","false"); } else { autoDone = true; } } catch (e) {}
+  armAuto();
+  try {
+    var first = audio.play();
+    if (first && first.then) first.then(function () { playing = true; autoDone = true; ui(true); evs.forEach(function (ev) { window.removeEventListener(ev, autoStart, true); }); }).catch(function () {});
+  } catch (e) {}
 
   /* petals (desktop CSS shows them) */
   (function () {
